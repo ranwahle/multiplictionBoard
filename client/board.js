@@ -1,6 +1,6 @@
 import './guess-component.js';
 
-const ProgressInterval = 1000;
+const ProgressInterval = 10000;
 
 export class MultiplictionBoard extends HTMLElement {
     connectedCallback() {
