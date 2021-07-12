@@ -1,6 +1,6 @@
 import './guess-component.js';
 
-const ProgressInterval = 1000;
+const ProgressInterval = 10000;
 
 export class MultiplictionBoard extends HTMLElement {
     connectedCallback() {
@@ -12,7 +12,7 @@ export class MultiplictionBoard extends HTMLElement {
             return;
         }
         this.startTime = Date.now();
-        setTimeout(this.sendProgress, ProgressInterval);
+    //    setTimeout(this.sendProgress, ProgressInterval);
     }
 
     sendProgress = async () => {
@@ -33,9 +33,10 @@ export class MultiplictionBoard extends HTMLElement {
 
         console.log(progressList);
 
-        if (progress !== 1) {
-            setTimeout(this.sendProgress, ProgressInterval);
-        }
+        return progressList;
+        // if (progress !== 1) {
+        //     setTimeout(this.sendProgress, ProgressInterval);
+        // }
     }
 
     answer = (evt) => {
@@ -48,6 +49,14 @@ export class MultiplictionBoard extends HTMLElement {
             cell.classList.remove('wrong');
             cell.innerText = target.row * target.col;
             this.querySelector('progress').value++;
+
+            // notify service worker
+            const progressIncreased = new CustomEvent('progressincreased', {
+                detail: {
+                    progress: this.querySelector('progress').value
+                }
+            })
+            navigator.serviceWorker.dispatchEvent(progressIncreased);
             if (this.querySelector('progress').value === this.guesses) {
                 this.dispatchEvent(new CustomEvent('play-all-success'));
             } else {

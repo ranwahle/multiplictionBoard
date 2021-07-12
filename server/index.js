@@ -18,7 +18,6 @@ app.get('/api/progress', (req, res) => {
 })
 
 app.post('/api/progress', (req, res) => {
-    console.log(req.body);
     const measureData = req.body;
     progress.push(measureData);
     res.send(JSON.stringify(progress));

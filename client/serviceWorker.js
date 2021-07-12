@@ -1,7 +1,11 @@
+// importScripts('./background-sync.js');
+
 const StaticFiles = ['/', 'board.js', 'board-style.css', 'guess-component.js','manifest.json',
      'index.html', 'index.js', 'fontawesome/all.css', 'webfonts/fa-solid-900.woff2'
 , 'recorder.js', 'serviceWorker.js', 'images/icon-192.png', 'images/favicon-32x32.png'];
 const CACHE_NAME = 'multipliction';
+const progress = 0;
+
 addEventListener('activate', function(event) {
     event.waitUntil(
         caches.keys().then(function (cacheNames) {
@@ -19,7 +23,7 @@ addEventListener('activate', function(event) {
 });
 
 function fetchAndCache(request, cachedResponse) {
-    console.log('cacehd response for request', request, cachedResponse)
+    console.log('cached response for request', request, cachedResponse)
     return fetch(request)
         .then((response) => {
             // Check if we received a valid response
@@ -59,3 +63,39 @@ addEventListener('install', evt => {
         })
     );
 })
+
+self.addEventListener('sync', (event) => {
+    console.log('sync');
+    if (event.tag == 'progressSync') {
+      event.waitUntil(sendProgress().then(
+            console.log(progress)
+      ));
+    }
+  });
+
+self.addEventListener('progressincreased', event => {
+    progress = event.detail.progress
+})
+  sendProgress = async () => {
+    const progressData = {
+        time: Date.now(), 
+        progress
+    };
+
+    const response = await fetch('/api/progress', {
+        method: 'post',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(progressData)
+    });
+
+    const progressList = await response.json();
+
+    console.log(progressList);
+
+    return progressList;
+    // if (progress !== 1) {
+    //     setTimeout(this.sendProgress, ProgressInterval);
+    // }
+}

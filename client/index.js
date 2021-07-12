@@ -1,9 +1,27 @@
 import './board.js';
 import './recorder.js';
 
+//One-off sync
+const activateSync = () => {
+    if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        navigator.serviceWorker.ready.then(swRegistration => {
+            Notification.requestPermission();
+            const board = document.querySelector('multipliction-board');
+            board.addEventListener('play-success', () => {
+            swRegistration.sync.register('progressSync');
+            })
+        });
+    } else {  //  sync or serviceWorker not supported
+        MultiplictionBoard.sendProgress();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const registration = await navigator.serviceWorker.register('./serviceWorker.js');
     console.log('registered', registration);
+   
+    activateSync(); 
+
     const refreshBotton = document.querySelector('button[role="button"]');
     const board = document.querySelector('multipliction-board');
     const allSuccessRecorder = document.querySelector('recording-component[data-role="all-success"]');
@@ -34,7 +52,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     successRecorder.addEventListener('recorded', cacheRecord);
     allSuccessRecorder.addEventListener('recorded', cacheRecord);
     mistakeRecorder.addEventListener('recorded', cacheRecord);
-
-
 
 })
