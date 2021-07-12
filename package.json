@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=14"
@@ -16,6 +17,11 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1",
-     "express": "^4.17.1"
-     }
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "git-format-staged": "^2.1.2",
+    "husky": "^7.0.0",
+    "prettier": "^2.3.2"
+  }
 }
