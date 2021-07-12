@@ -1,12 +1,28 @@
 import './guess-component.js';
 
+const ProgressInterval = 1000;
+
 export class MultiplictionBoard extends HTMLElement {
-    constructor() {
-        super();
-       
-    }
     connectedCallback() {
         this.render();
+    }
+
+    guessFocus = () => {
+        if (this.startTime) {
+            return;
+        }
+        this.startTime = Date.now();
+        setTimeout(this.sendProgress, ProgressInterval);
+    }
+
+    sendProgress = () => {
+        const progress = {time: Date.now() - this.startTime, progress: this.querySelector('progress').value
+    / this.guesses };
+    
+    console.log('progress', progress);
+    if (progress !== 1) {
+    setTimeout(this.sendProgress, ProgressInterval);
+    }
     }
 
     answer = (evt) => {
@@ -64,6 +80,7 @@ export class MultiplictionBoard extends HTMLElement {
 `
         this.querySelectorAll('guess-component').forEach(item => {
             item.addEventListener('answer', this.answer);
+            item.addEventListener('guessFocus', this.guessFocus);
         })
     }
 
