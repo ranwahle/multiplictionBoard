@@ -29,7 +29,7 @@ function fetchAndCache(request, cachedResponse) {
             }
             return caches.open(CACHE_NAME)
                 .then((cache) => {
-                    if (request.method === 'post') {
+                    if (request.method === 'POST') {
                         return response;
                     }
                     cache.put(request, response.clone());

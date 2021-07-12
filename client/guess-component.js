@@ -1,13 +1,10 @@
 export class GuessComponent extends HTMLElement {
 
-    constructor() {
-        super();
-        this.onChange = () => {
-            const value = +this.inputElement.value;
-            const isRight = value === (this.row * this.col);
-            this.dispatchEvent(new CustomEvent('answer', {detail: {isRight}}));
-        };
-    }
+    onChange = () => {
+        const value = +this.inputElement.value;
+        const isRight = value === (this.row * this.col);
+        this.dispatchEvent(new CustomEvent('answer', {detail: {isRight}}));
+    };
 
     connectedCallback() {
         this.render();
@@ -29,11 +26,14 @@ export class GuessComponent extends HTMLElement {
         return this.querySelector('input')
     }
 
-
+    onInputFocus = () => {
+        this.dispatchEvent(new CustomEvent('guessFocus'));
+    }
 
 
     setEventandlers() {
-        this.querySelector('input').addEventListener('change', this.onChange)
+        this.inputElement.addEventListener('focus', this.onInputFocus);
+        this.inputElement.addEventListener('change', this.onChange)
     }
 
     render() {
