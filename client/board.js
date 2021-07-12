@@ -21,13 +21,18 @@ export class MultiplictionBoard extends HTMLElement {
                 / this.guesses
         };
 
-        await fetch('/api/progress', {
+        const response = await fetch('/api/progress', {
             method: 'post',
             headers: {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify(progress)
         });
+
+        const progressList = await response.json();
+
+        console.log(progressList);
+
         if (progress !== 1) {
             setTimeout(this.sendProgress, ProgressInterval);
         }
