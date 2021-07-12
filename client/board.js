@@ -15,13 +15,19 @@ export class MultiplictionBoard extends HTMLElement {
         setTimeout(this.sendProgress, ProgressInterval);
     }
 
-    sendProgress = () => {
+    sendProgress = async () => {
         const progress = {
             time: Date.now() - this.startTime, progress: this.querySelector('progress').value
                 / this.guesses
         };
 
-        console.log('progress', progress);
+        await fetch('/api/progress', {
+            method: 'post',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(progress)
+        });
         if (progress !== 1) {
             setTimeout(this.sendProgress, ProgressInterval);
         }
