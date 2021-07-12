@@ -16,24 +16,26 @@ export class MultiplictionBoard extends HTMLElement {
     }
 
     sendProgress = () => {
-        const progress = {time: Date.now() - this.startTime, progress: this.querySelector('progress').value
-    / this.guesses };
-    
-    console.log('progress', progress);
-    if (progress !== 1) {
-    setTimeout(this.sendProgress, ProgressInterval);
-    }
+        const progress = {
+            time: Date.now() - this.startTime, progress: this.querySelector('progress').value
+                / this.guesses
+        };
+
+        console.log('progress', progress);
+        if (progress !== 1) {
+            setTimeout(this.sendProgress, ProgressInterval);
+        }
     }
 
     answer = (evt) => {
-        const {isRight} = evt.detail;
-        const {target} = evt;
+        const { isRight } = evt.detail;
+        const { target } = evt;
         const cell = target.parentNode;
 
         if (isRight) {
             cell.classList.add('right');
             cell.classList.remove('wrong');
-            cell.innerText = target.row*target.col;
+            cell.innerText = target.row * target.col;
             this.querySelector('progress').value++;
             if (this.querySelector('progress').value === this.guesses) {
                 this.dispatchEvent(new CustomEvent('play-all-success'));
@@ -48,7 +50,7 @@ export class MultiplictionBoard extends HTMLElement {
     }
 
     renderCell(row, col) {
-        const random = Math.round( Math.random() * 2);
+        const random = Math.round(Math.random() * 2);
         if (random % 2 === 0 || row === 0 || col === 0) {
             return `${(row + 1) * (col + 1)}`;
         }
@@ -59,7 +61,7 @@ export class MultiplictionBoard extends HTMLElement {
         let result = '';
         for (let rows = 0; rows < 10; rows++) {
             result += `<div class="row">`;
-            for (let cols = 0; cols < 10; cols ++) {
+            for (let cols = 0; cols < 10; cols++) {
                 result += `<div class="cell">${this.renderCell(rows, cols)}</div>`
             }
             result += `</div>`;
