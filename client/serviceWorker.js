@@ -69,7 +69,7 @@ self.addEventListener('message',(message) => {
 });
 
 self.progressList = [];
-self.sendProgress = () => {
+self.sendProgress = async () => {
      
     const response = await fetch('/api/progress', {
         method: 'post',
@@ -81,6 +81,8 @@ self.sendProgress = () => {
 
     const progressList = await response.json();
     self.postMessage(progressList);
+    // Clean the array
+    self.progressList = [];
 }
 
 self.addEventListener('sync', (event) => {

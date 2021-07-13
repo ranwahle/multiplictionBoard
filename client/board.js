@@ -28,26 +28,14 @@ export class MultiplictionBoard extends HTMLElement {
         console.log('sending message');
       
         serviceRegistration.active.postMessage(progress);
-
-
-        
-        const response = await fetch('/api/progress', {
-            method: 'post',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(progress)
-        });
-
-        const progressList = await response.json();
-
-       
-       
+        await serviceRegistration.sync.register('progressSync');
         if (progress !== 1) {
             setTimeout(this.sendProgress, ProgressInterval);
         }
-        return progressList;
+       
     }
+
+
 
     answer = (evt) => {
         const { isRight } = evt.detail;
