@@ -64,10 +64,29 @@ addEventListener('install', evt => {
     );
 })
 
+self.addEventListener('message',(message) => {
+    self.progressList.push(message.data);
+});
+
+self.progressList = [];
+self.sendProgress = () => {
+     
+    const response = await fetch('/api/progress', {
+        method: 'post',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(self.progressList)
+    });
+
+    const progressList = await response.json();
+    self.postMessage(progressList);
+}
+
 self.addEventListener('sync', (event) => {
     console.log('sync');
     if (event.tag == 'progressSync') {
-      event.waitUntil(sendProgress().then(
+      event.waitUntil(self.sendProgress().then(
             console.log(progress)
       ));
     }

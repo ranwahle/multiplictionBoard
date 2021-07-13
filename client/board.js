@@ -12,15 +12,25 @@ export class MultiplictionBoard extends HTMLElement {
             return;
         }
         this.startTime = Date.now();
-    //    setTimeout(this.sendProgress, ProgressInterval);
+           setTimeout(this.sendProgress, ProgressInterval);
     }
 
     sendProgress = async () => {
+
         const progress = {
             time: Date.now() - this.startTime, progress: this.querySelector('progress').value
                 / this.guesses
         };
 
+        const serviceRegistration = await navigator.serviceWorker.ready;
+
+
+        console.log('sending message');
+      
+        serviceRegistration.active.postMessage(progress);
+
+
+        
         const response = await fetch('/api/progress', {
             method: 'post',
             headers: {
@@ -31,12 +41,12 @@ export class MultiplictionBoard extends HTMLElement {
 
         const progressList = await response.json();
 
-        console.log(progressList);
-
+       
+       
+        if (progress !== 1) {
+            setTimeout(this.sendProgress, ProgressInterval);
+        }
         return progressList;
-        // if (progress !== 1) {
-        //     setTimeout(this.sendProgress, ProgressInterval);
-        // }
     }
 
     answer = (evt) => {

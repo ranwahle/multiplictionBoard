@@ -19,7 +19,12 @@ app.get('/api/progress', (req, res) => {
 
 app.post('/api/progress', (req, res) => {
     const measureData = req.body;
+    if (!Array.isArray(measureData)) {
     progress.push(measureData);
+    } else {
+        progress.push(...measureData);
+    }
+
     res.send(JSON.stringify(progress));
 })
 
