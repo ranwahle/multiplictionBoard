@@ -80,7 +80,10 @@ self.sendProgress = async () => {
     });
 
     const progressList = await response.json();
-    self.postMessage(progressList);
+    const client = await clients.get(self.clientId);
+    if (client) {
+        client.postMessage( progressList);
+    }
     // Clean the array
     self.progressList = [];
 }
@@ -96,27 +99,5 @@ self.addEventListener('sync', (event) => {
 
 self.addEventListener('progressincreased', event => {
     progress = event.detail.progress
-})
-  sendProgress = async () => {
-    const progressData = {
-        time: Date.now(), 
-        progress
-    };
+});
 
-    const response = await fetch('/api/progress', {
-        method: 'post',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify(progressData)
-    });
-
-    const progressList = await response.json();
-
-    console.log(progressList);
-
-    return progressList;
-    // if (progress !== 1) {
-    //     setTimeout(this.sendProgress, ProgressInterval);
-    // }
-}
