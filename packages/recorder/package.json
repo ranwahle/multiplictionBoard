@@ -1,0 +1,21 @@
+{
+  "name": "recorder",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ranwahle/multiplictionBoard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ranwahle/multiplictionBoard/issues"
+  },
+  "homepage": "https://github.com/ranwahle/multiplictionBoard#readme"
+}

@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "npm run start --workspace=server",
+    "start": "npm start --workspace=server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
@@ -25,7 +25,6 @@
     "prettier": "^2.3.2"
   },
   "workspaces": [
-    "packages/client",
-    "packages/server"
+    "./packages/*"
   ]
 }
