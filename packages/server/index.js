@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use('/fontawesome', express.static('node_modules/@fortawesome/fontawesome-free/css'));
 app.use('/webfonts', express.static('node_modules/@fortawesome/fontawesome-free/webfonts'));
-app.use('/', express.static('client'))
+app.use('/', express.static('../client'))
 
 
 app.get('/api/progress', (req, res) => {

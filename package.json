@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "npm run start --workspace=server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
@@ -23,5 +23,9 @@
   "devDependencies": {
     "husky": "^7.0.0",
     "prettier": "^2.3.2"
-  }
+  },
+  "workspaces": [
+    "packages/client",
+    "packages/server"
+  ]
 }
